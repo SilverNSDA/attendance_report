@@ -1,0 +1,211 @@
+<odoo>
+    <data>
+
+        <template id="attendance_table_backend" name="attendance_table_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/jy_attendance_report/static/src/js/attendance_table_widget.js"/>
+                <link rel="stylesheet" type="text/less" href="/jy_attendance_report/static/src/less/attendance_table_widget.less"/>
+            </xpath>
+        </template>
+
+        <template id="leave_popover" name="leave_popover">
+            <span class="atd-leave clickable" data-toggle="popover" data-trigger="focus" 
+                t-att-data-id="leave['id']" 
+                t-att-data-name="leave['name']" 
+                t-att-data-state="leave['state']" 
+                t-att-data-display-name="leave['display_name']" 
+                t-att-data-date-from="leave['date_from']" 
+                t-att-data-date-to="leave['date_to']" 
+                t-att-data-duration="leave['duration']" 
+                t-att-data-leave-type="leave['leave_type']" 
+                tabindex="0">
+                <t t-if="leave['state'] == 'validate'">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                </t>
+                <t t-if="leave['state'] != 'validate'">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                </t>
+            </span>
+        </template>
+        
+        <template id="holidays_popover" name="holidays_popover">
+            <span class="atd-holidays clickable" data-toggle="popover" data-trigger="focus" 
+                t-att-data-id="holiday['id']" 
+                t-att-data-title="holiday['name']" 
+                t-att-data-description="holiday['line_name']" 
+                tabindex="0">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </span>
+        </template>
+        
+        <template id="report_attendance_date_cell" name="report_attendance_date_cell">
+            <t t-if="atd['worked_hours'] > 0">
+                <span t-esc="atd['worked_hours']" class="atd-worked-hours clickable"/>
+            </t>
+            <t t-if="atd['ot_worked_hours'] > 0">
+                <span t-esc="atd['ot_worked_hours']" class="atd-ot-worked-hours clickable"/>
+            </t>
+            <t t-if="atd['type'] == 'leave'">
+                <t t-foreach="atd['leave_ids']" t-as="leave_id">
+                    <t t-call="jy_attendance_report.leave_popover">
+                        <t t-set="leave" t-value="leaves[leave_id]"/>
+                    </t>
+                </t>
+            </t>
+            <t t-if="atd['type'] == 'holidays'">
+                <t t-call="jy_attendance_report.holidays_popover">
+                    <t t-set="holiday" t-value="atd['holidays']"/>
+                </t>
+            </t>
+            <t t-if="atd['missing_hours'] and not atd['holidays']">
+                <span class="new-leave-request clickable">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </span>
+            </t>
+        </template>
+
+        <template id="report_attendance" name="report_attendance" key="report_attendance">
+            <t t-name="jy_attendance_report.report_attendance">
+                <div class="o_form_view">
+                    <div class="page attendance-report">
+                        <div class="col-sm-12 report-filters">
+                            <div class="col-sm-6">
+                                <label class="o_form_label">Dates</label>
+                                <div class='input-group date o_datepicker o_form_field_date o_form_field'>
+                                    <input type="text" class="o_datepicker_input o_form_input date-filter" 
+                                        t-att-value="date_from"
+                                        name="date_from" id='date_from'/>
+                                </div>
+                                <span>to</span>
+                                <div class='input-group date o_datepicker o_form_field_date o_form_field'>
+                                    <input type="text" class="o_datepicker_input o_form_input date-filter"
+                                        t-att-value="date_to"
+                                        name="date_to" id='date_to'/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="attendance-table-wrapper col-sm-12 col-md-12">
+
+
+                            <div class="attendance-table-left col-sm-3 col-md-2 hidden-xs">
+                                <table class="attendance-table-report table" id="attendance-table-heading">
+                                    <thead>
+                                        <tr class="table-header-row">
+                                            <th class="column-first"></th>
+                                            <!-- <th class="column-info"><i class="fa fa-calendar" aria-hidden="true"></i></th>
+                                            <th class="column-info"><i class="fa fa-clock-o" aria-hidden="true"></i></th>
+                                            <th class="column-info"><i class="fa fa-check-circle" aria-hidden="true"></i></th>
+                                            <th class="column-info"><i class="fa fa-bed" aria-hidden="true"></i></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="departments" t-as="dept">
+                                            <tr class="department-row active">
+                                                <td class="column-first" colspan="5">
+                                                    <i class="fa fa-building" aria-hidden="true"></i>
+                                                    <span t-att-data-id="dept.id" class="department-name clickable">
+                                                        <t t-esc="dept.display_name"/>
+                                                    </span>
+                                                </td>
+                                                <!-- <td class="column-info"></td>
+                                                <td class="column-info"></td>
+                                                <td class="column-info"></td>
+                                                <td class="column-info"></td> -->
+                                            </tr> 
+                                            <tr t-foreach="employees.filtered(lambda em: em.department_id.id == dept.id)" t-as="e" 
+                                                t-attf-class="employee-row dept-{{dept.id}} employee-{{e.id}} {{attributes[e.id]['class']}}">
+                                                <td class="column-first">
+                                                    <span class="employee-name clickable" t-att-data-id="e.id">
+                                                        <t t-esc="e.name"/>
+                                                    </span>
+                                                </td>
+                                                <!-- <td class="column-info"><t t-esc="attributes[e.id]['worked_hours']"/></td>
+                                                <td class="column-info"><t t-esc="attributes[e.id]['ot_worked_hours']"/></td>
+                                                <td class="column-info"><t t-esc="attributes[e.id]['approved_leave_count']"/></td>
+                                                <td class="column-info"><t t-esc="attributes[e.id]['no_approved_leave_count']"/></td> -->
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <div class="attendance-table-right col-sm-9 col-md-10">
+                                <table class="attendance-table-report table table-hover" id="attendance-table-calendar">
+                                    <thead>
+                                        <tr class="table-header-row">
+                                            <th class="column-first visible-xs-block"></th>
+                                            
+                                            <th class="column-info"><i class="fa fa-calendar" aria-hidden="true"></i></th>
+                                            <th class="column-info"><i class="fa fa-clock-o" aria-hidden="true"></i></th>
+                                            <th class="column-info"><i class="fa fa-check-circle" aria-hidden="true"></i></th>
+                                            <th class="column-info"><i class="fa fa-bed" aria-hidden="true"></i></th>
+
+                                            <th t-foreach="dates" t-as="d" t-att-data-date="d['date']"
+                                                t-attf-class="date-header date-cell date-{{d['date']}} #{(d['is_weekend']) and 'weekend' or ''}">
+                                                <div class="date-cell-weekday" t-esc="d['weekday']"/>
+                                                <div class="date-cell-date" t-esc="d['simple']" />
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="departments" t-as="dept">
+                                            <tr class="department-row active">
+                                                <td class="column-first visible-xs-block">
+                                                    <i class="fa fa-building" aria-hidden="true"></i>
+                                                    <span t-att-data-id="dept.id" class="department-name clickable">
+                                                        <t t-esc="dept.name"/>
+                                                    </span>
+                                                </td>
+                                                
+                                                <td class="column-info"><span> </span></td>
+                                                <td class="column-info"><span></span></td>
+                                                <td class="column-info"><span></span></td>
+                                                <td class="column-info"><span></span></td>
+
+                                                <td t-foreach="dates" t-as="d" t-att-data-date="d['date']"
+                                                    t-attf-class="department-atd-date date-cell date-{{d['date']}} #{(d['is_weekend']) and 'weekend' or ''}"></td>
+                                            </tr> 
+                                            <tr t-foreach="employees.filtered(lambda em: em.department_id.id == dept.id)" t-as="e" 
+                                                t-attf-class="employee-row dept-{{dept.id}} employee-{{e.id}} {{attributes[e.id]['class']}}">
+                                                <td class="column-first visible-xs-block">
+                                                    <span class="employee-name clickable" t-att-data-id="e.id">
+                                                        <t t-esc="e.name"/>
+                                                    </span>
+                                                </td>
+                                                
+                                                <td class="column-info"><t t-esc="attributes[e.id]['worked_hours']"/></td>
+                                                <td class="column-info"><t t-esc="attributes[e.id]['ot_worked_hours']"/></td>
+                                                <td class="column-info"><t t-esc="attributes[e.id]['approved_leave_count']"/></td>
+                                                <td class="column-info"><t t-esc="attributes[e.id]['no_approved_leave_count']"/></td>
+
+                                                <td t-foreach="dates" t-as="d" 
+                                                    t-attf-class="employee-atd-date date-cell date-{{d['date']}} type-{{attendances[e.id][d['date']]['type']}} #{(d['is_weekend']) and 'weekend' or ''} {{attendances[e.id][d['date']]['bg_class']}}" 
+                                                    t-att-data-date="d['date']" t-att-data-eid="e.id">
+                                                    <t t-call="jy_attendance_report.report_attendance_date_cell">
+                                                        <t t-set="atd" t-value="attendances[e.id][d['date']]"/>
+                                                    </t>
+                                                </td>
+                                                
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            
+                            
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        
+
+
+
+    </data>
+</odoo>

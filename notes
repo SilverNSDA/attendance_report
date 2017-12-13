@@ -1,0 +1,8 @@
+CP: co phep
+KP: khong phep
+PN: phep nam
+PC: phep cuoi
+
+Thong ke tu ngay den ngay VD: 2017-10-01 ==> 2017-10-31
+Danh dau ngay cuoi tuan (VD: Sunday), ngay le
+Sum row: total worked_hours, ot_worked_hours, weekend_worked_hours

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<!-- <t t-name="AttendanceReport.filters">
+    <div class="report-filters">
+        <div class="col-sm-6x">
+            <label class="o_form_label">Department</label>
+        </div>
+        <div class="col-sm-6x">
+            <label class="o_form_label">Dates</label>
+            <div class='input-group date o_datepicker o_form_field_date o_form_field'>
+                <input type="text" class="o_datepicker_input o_form_input date-filter" name="date_from" id='date_from'/>
+            </div>
+            <span>to</span>
+            <div class='input-group date o_datepicker o_form_field_date o_form_field'>
+                <input type="text" class="o_datepicker_input o_form_input date-filter" name="date_to" id='date_to'/>
+            </div>
+        </div>
+    </div>
+</t> -->
+
+<t t-name="attendance_table_leave_popover_title">
+    <div>
+        <a class="pull-right o_title_redirect" href="#" t-att-data-id="doc.id"><i class="fa fa-external-link" /></a>
+        <b><t t-esc="doc.title" /></b>
+    </div>
+</t>
+
+<t t-name="attendance_table_leave_popover_content">
+    <div class="leave-popover-content">
+        <p><t t-esc="doc.name"/></p>
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <th class="text-right">
+                        State
+                    </th>
+                    <td>
+                        <span class="leave-state" t-esc="doc.state"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right">
+                        Dates
+                    </th>
+                    <td>
+                        <ul class="leave-dates">
+                            <li><t t-esc="doc.date_from"/></li>
+                            <li><t t-esc="doc.date_to"/></li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right">
+                        Duration
+                    </th>
+                    <td>
+                        <t t-esc="doc.duration"/> day(s)
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-right">
+                        Leave type
+                    </th>
+                    <td>
+                        <t t-esc="doc.leave_type"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</t>
+
+
+
+<t t-name="attendance_table_holidays_popover_title">
+    <div>
+        <a class="pull-right o_title_redirect" href="#" t-att-data-id="doc.id"><i class="fa fa-external-link" /></a>
+        <b><t t-esc="doc.title" /></b>
+    </div>
+</t>
+
+<t t-name="attendance_table_holidays_popover_content">
+    <div class="popover-content">
+        <p><t t-esc="doc.description"/></p>
+    </div>
+</t>
+
+
+<t t-name="AttendanceReport.optionButton">
+    <div class="o_dropdown o_atd_table_legends">
+        <a class="dropdown-toggle" data-toggle="dropdown" type="button">
+            <span class="fa fa-info" />
+            Legend
+            <span class="caret" />
+        </a>
+        <ul class="dropdown-menu o_legend_menu" role="menu">
+            <li class="legend-full-work"><a><span class="demo">8.0</span><span class="description">Full work</span></a></li>
+            <li class="legend-ot-work"><a><span class="demo atd-ot-worked-hours">3.0</span><span class="description">OT work</span></a></li>
+            <li class="legend-not-full-work"><a><span class="demo bg-warning">6.0</span><span class="description">Early checkout or Late checkin</span></a></li>
+            <li class="legend-no-approved-leaves"><a><span class="demo bg-danger"></span><span class="description">No leave requests</span></a></li>
+            <li class="legend-approved-leaves"><a><span class="demo bg-danger"><i class="fa fa-file-text-o" aria-hidden="true"></i></span><span class="description">Waiting to approve leaves</span></a></li>
+            <li class="legend-approved-leaves"><a><span class="demo bg-success"><i class="fa fa-check-circle" aria-hidden="true"></i></span><span class="description">Approved leaves</span></a></li>
+            <li class="legend-public-holidays"><a><span class="demo bg-info"><i class="fa fa-info-circle" aria-hidden="true"></i></span><span class="description">Public holidays</span></a></li>
+        </ul>
+    </div>
+    <div class="o_dropdown o_atd_table_columns_filter">
+        <a class="dropdown-toggle" data-toggle="dropdown" type="button">
+            Filters
+            <span class="caret" />
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li class="o_atd_table_option_columns"><a>
+                <label class="checkbox-inline">
+                    <input checked="true" class="o_atd_table_report_show_line" data-value="full_working" type="checkbox">Full working</input>
+                </label></a>
+            </li>
+            <li class="o_atd_table_option_columns"><a>
+                <label class="checkbox-inline">
+                    <input checked="true" class="o_atd_table_report_show_line" data-value="approved_leaves" type="checkbox">Approved leaves</input>
+                </label></a>
+            </li>
+            <li class="o_atd_table_option_columns"><a>
+                <label class="checkbox-inline">
+                    <input checked="true" class="o_atd_table_report_show_line" data-value="no_approved_leaves" type="checkbox">No approved leaves</input>
+                </label></a>
+            </li>
+            <li class="o_atd_table_option_columns"><a>
+                <label class="checkbox-inline">
+                    <input checked="true" class="o_atd_table_report_show_line" data-value="have_ot" type="checkbox">Have OT</input>
+                </label></a>
+            </li>
+        </ul>
+    </div>
+</t>
+
+</templates>

@@ -1,0 +1,152 @@
+.report-filters{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+table.sticky-table{
+    overflow-y: auto;
+    overflow-x: auto;
+}
+.attendance-table-wrapper{
+    padding-left: 0;
+    padding-right: 0;
+}
+.attendance-table-left{
+    padding-left: 0;
+    padding-right: 0;
+    border-right: solid 3px #ccc;
+}
+.attendance-table-right{
+    padding-left: 0;
+    padding-right: 0;
+    overflow-x: auto;
+    #attendance-table-calendar{
+        margin-bottom: 5px;
+    }
+}
+.attendance-table-report{
+    .table-header-row{
+        height: 53px;
+    }
+    td{
+        height: 35px;
+        // width: 75px;
+    }
+    .clickable{
+        cursor: pointer;
+        &:hover{
+            color:#21b799;
+        }
+    }
+    .weekend{
+        background: #f0f0f0;
+    }
+    .column-info {
+        width: 50px;
+        text-align: right;
+        color:#d9534f;
+    }
+    .table-header-row{
+        .column-first{
+            min-width: 200px;
+        }
+        .date-cell {
+            text-align: center;
+        }    
+    }
+    .department-row{
+        font-weight: bold;
+        text-transform: uppercase;
+        .department-atd-date{
+            text-align: center;
+        }
+    }
+    .employee-row{
+        border-color: white;
+        .employee-name{
+            margin-left: 10px;
+            padding: 5px;
+            position: relative;
+            // &::before{
+            //     content: "\f054";
+            //     font: normal normal normal 14px/1 FontAwesome;
+            //     color:#ff4444;
+            //     position: absolute;
+            //     left: 0;
+            //     top:2px;
+            //     visibility: hidden;
+
+            // }
+        }
+        &.hovering{
+            .employee-name{
+                // &::before{
+                //     visibility: visible;
+                // }
+                // border-left: solid 3px #ff4444 !important;
+                background-color: #ff4444;
+                color: white;
+                font-weight: bold;
+            }
+        }
+        .employee-atd-date{
+            text-align: center;
+        }
+    }
+    .atd-ot-worked-hours {
+        border: solid thin #999;
+        padding: 0px 2px;
+    }
+    .date-header{
+        &.hovering{
+            background-color: #ff4444;
+            color:white;
+        }
+    }
+    .date-cell{
+        border-left: solid thin white;
+        position: relative;
+        min-width: 70px;
+        &.hovering{
+            border-left: solid thin #ff4444;
+            border-right: solid thin #ff4444;
+        }
+        .new-leave-request{
+            visibility: hidden;
+            position: absolute;
+            top: 0;
+            right: 2px;
+            z-index: 1;
+        }
+        &:hover{
+            .new-leave-request{
+                visibility: visible;
+            }
+        }
+    }
+    
+}
+.o_legend_menu {
+    span.demo{
+        min-width: 30px;
+        display: inline-block;
+        text-align: center;
+        line-height: 25px;
+        min-height: 25px;
+        vertical-align: middle;
+        margin-right: 5px;
+        &.atd-ot-worked-hours{
+            border: solid thin #999;
+            padding: 1px 3px;
+        }
+    }
+}
+.leave-popover-content{
+    .leave-dates{
+        padding-left: 0;
+        list-style: none;
+    }
+    .leave-state{
+        font-weight: bold;
+    }
+    
+}

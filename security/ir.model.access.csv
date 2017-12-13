@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_jy_attendance_table_jy_attendance_table,jy_attendance_table.jy_attendance_table,model_jy_attendance_table_jy_attendance_table,,1,0,0,0

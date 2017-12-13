@@ -1,0 +1,15 @@
+<odoo>
+<data>
+
+<!--     <record id="hr_attendance_view_config_inherit" model="ir.ui.view">
+        <field name="model">base.config.settings</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_config"/>
+        <field name="arch" type="xml">
+            <field name="group_attendance_use_pin" position="after">
+                <field name="atd_table_period"/>
+            </field>
+        </field>
+    </record>
+ -->
+</data>
+</odoo>
